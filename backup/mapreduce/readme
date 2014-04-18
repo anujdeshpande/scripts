@@ -1,0 +1,35 @@
+Usage
+Assuming HADOOP_HOME is the root of the installation and HADOOP_VERSION is the Hadoop version installed, compile WordCount.java and create a jar:
+
+$ mkdir wordcount_classes 
+$ javac -classpath ${HADOOP_HOME}/hadoop-${HADOOP_VERSION}-core.jar -d wordcount_classes WordCount.java 
+$ jar -cvf /usr/joe/wordcount.jar -C wordcount_classes/ .
+
+Assuming that:
+
+/usr/joe/wordcount/input - input directory in HDFS
+/usr/joe/wordcount/output - output directory in HDFS
+Sample text-files as input:
+
+$ bin/hadoop dfs -ls /usr/joe/wordcount/input/ 
+/usr/joe/wordcount/input/file01 
+/usr/joe/wordcount/input/file02 
+
+$ bin/hadoop dfs -cat /usr/joe/wordcount/input/file01 
+Hello World Bye World 
+
+$ bin/hadoop dfs -cat /usr/joe/wordcount/input/file02 
+Hello Hadoop Goodbye Hadoop
+
+Run the application:
+
+$ bin/hadoop jar /usr/joe/wordcount.jar org.myorg.WordCount /usr/joe/wordcount/input /usr/joe/wordcount/output
+
+Output:
+
+$ bin/hadoop dfs -cat /usr/joe/wordcount/output/part-00000 
+Bye 1 
+Goodbye 1 
+Hadoop 2 
+Hello 2 
+World 2 

@@ -1,0 +1,33 @@
+Hadoop running wordcount examples
+0. bin/hadoop namenode -format
+   to format hadoop dfs
+1.start all service
+/usr/local/hadoop/bin/start-all.sh 
+depends on where you have installed hadoop
+
+
+
+2.check using
+jps
+
+2287 TaskTracker
+2149 JobTracker
+1938 DataNode
+2085 SecondaryNameNode
+2349 Jps
+1788 NameNode
+
+3. bin/hadoop dfs -copyFromLocal /home/hduser/a.txt /home/hduser/count
+
+create a text file to do a wordcount on it, and copy to hduser/count
+
+4. check using
+bin/hadoop dfs -ls /user/hduser
+Found 1 items
+
+5. bin/hadoop jar hadoop-0.20.0-examples.jar wordcount /home/hduser/count /home/hduser/output
+and job will start
+
+6. bin/hadoop dfs -cat /home/hduser/output/part-r-00000
+you will see output
+
