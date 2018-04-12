@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  
+  <head>
+    <!-- Basic Page Needs
+	 –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta charset="UTF-8"> 
+    <title>Espressif | Alexa</title>
+    <meta name="description" content="Add Wi-Fi credentials and Alexa refresh token to a binary blob, flashable on your ESP32 Audio Development board.">
+    <meta name="author" content="Espressif Systems">
+
+    <!-- Mobile Specific Metas
+	 –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- FONT
+	 –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+
+    <!-- CSS
+	 –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="css/skeleton.css">
+    <link rel="stylesheet" href="css/normalize.css">
+
+    <!-- Favicon
+	 –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="icon" type="image/ico" href="img/favicon.ico">
+    <script src="js/jquery.min.js"></script>
+  </head>
+  <body >
+    <div class="container">
+      
+      <div class="row">
+	<div class="one-half column" style="margin-top: 25%">
+          <h3>Alexa on ESP32</h3>
+
+	  <p>This utility can be used to create a flashable partition with AVS (Alexa Voice Service) OAuth2.0 token and Wi-Fi credentials for running Espressif's AVS SDK on ESP LyraTD-MSC board. This utility is to be used <b>only</b> for evaluation. For production usecases, you will have to provide your own Phone app or equivalent provisioning scheme.</p>
+
+	  <p> We encourage you to delete the generated binary file from our server, after you have successfully downloaded it. We purge all the generated files everyday</p>
+
+	  <p> Make sure that you use <b>Chrome or Safari</b> for generating the binary file.<br/>Firefox and Internet Explorer are known to have issues </p>
+	  <form id="myform">
+	    <p>Client ID:</p>
+	    <input type="clientid" name="clientid">
+	    <br/>
+	    <br/>
+	    <p>Client Secret:</p>
+	    <input type="clientsec" name="clientsec">
+	    <br/>
+	    <br/>
+	    <p>Product ID/Device Type:</p>
+	    <input type="productid" name="productid">
+	    <br/>
+	    <br/>
+	    <p>Device Serial No:</p>
+	    <input type="serialno" name="serialno">
+	    <br/>
+	    <br/>
+	    <p>Wi-Fi SSID:</p>
+	    <input type="ssid" name="ssid">
+	    <br/>
+	    <br/>
+	    <p>Wi-Fi Passphrase:</p>
+	    <input type="passphrase" name="passphrase">
+	    <br/>
+	    <br/>
+	    <input type="submit" style="background-color: #d12e26; color: #fff" value="Build Image">
+	  </form>
+	  <!-- <form action="https://w7ssac8yzf.execute-api.us-east-1.amazonaws.com/dev/redirector"> -->
+	  <!--   <input type="submit" style="background-color: #d12e26;color: #fff" value="Go to Amazon Sign-In"> -->
+	  <!-- </form> -->
+	</div>
+      </div>
+    </div>
+
+    <script>
+      var form = document.getElementById("myform");
+      //var dw = document.getElementById("download");
+      var del = document.getElementById("delete");
+      //dw.style.display = "none";
+      form.onsubmit = function (e) {
+      // stop the regular form submission
+      e.preventDefault();
+      
+      // collect the form data while iterating over the inputs
+      var data = {};
+      for (var i = 0, ii = form.length; i < ii; ++i) {
+					    var input = form[i];
+					    if (input.name) {
+					    data[input.name] = input.value;
+					    }
+					    }
+					    //data['code'] = GetURLParameter('code');
+					    console.log(data);
+					    addData(data);
+					    
+					    }
+					    function addData(data){// pass your data in method
+					    $.ajax({
+					    type: "POST",
+					    url: "https://td0d5ywhy7.execute-api.us-east-1.amazonaws.com/dev/clicker",
+					    data: JSON.stringify(data),// now data come in this function
+					    contentType: "application/json; charset=utf-8",
+
+					    crossDomain: true,
+					    <!-- headers: { 'Access-Control-Allow-Origin': '*', -->
+					    <!--            'Content-Type': '*' -->
+					    <!-- 	   }, -->
+					    dataType: "json",
+					    traditional: true,
+					    async: false,
+					    success: function (data, status, jqXHR) {
+                                            console.log(data);
+					    console.log(status.code);
+					    form.style.display = "none";
+					    //alert("success");// write success in " "
+					    },
+					    
+					    error: function (jqXHR, status) {
+					    console.log(jqXHR);
+					    console.log("Status code is "+status.code);
+					    // alert('URL : http://espressif.s3-website-us-east-1.amazonaws.com/partition_'+GetURLParameter('code')+'.bin');
+					    form.style.display = "none";
+					    //document.getElementById("dw").href="http://espressif.s3-website-us-east-1.amazonaws.com/partition_"+GetURLParameter('code')+".bin";
+					    //document.getElementById("delete").href="https://w7ssac8yzf.execute-api.us-east-1.amazonaws.com/dev/deletebin?code=partition_"+GetURLParameter('code')+".bin";
+					    //dw.style.display = "block";
+					    }
+					    });
+					    }
+    </script>
+  </body>
+</html>
+
